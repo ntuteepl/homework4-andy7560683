@@ -1,74 +1,100 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int main() {
-    int s1, d1, s2, d2, s3, d3;
-    scanf("%d %d %d %d %d %d", &s1, &d1, &s2, &d2, &s3, &d3);
-    int a[25] = {0};
-    for (int i = s1; i < d1; i++) {
-        a[i]++;
+int main()
+{
+    int i=0,j=0,k=0,x=0,y=1,sum=0,num=0,s[100],d[100],sf[100],df[100],s1,d1,count=0;
+    while(scanf("%d%d",&s[i],&d[i])!=EOF)  //輸入
+    {
+        i++;
+        count++;
     }
-    for (int i = s2; i < d2; i++) {
-        a[i]++;
-    }
-    for (int i = s3; i < d3; i++) {
-        a[i]++;
-    }
-    int ans = 0;
-    for (int i = 0; i < 25; i++) {
-        if (a[i] > ans) {
-            ans = a[i];
+
+    for(i=0;i<count-1;i++)             //整理班表
+    {
+        for(int j=0;j<count;j++)
+        {
+            if(s[j]>s[j+1])
+            {
+                s1=s[j];
+                s[j]=s[j+1];
+                s[j+1]=s1;
+
+                d1=d[j];
+                d[j]=d[j+1];
+                d[j+1]=d1;
+            }
         }
     }
-    printf("%d\n", ans);
 
-    int c[3][2]={{s1,d1},{s2,d2},{s3,d3}};
-    int d[3][2];
+    for(i=0;i<count;i++)        //備份
+    {
+        sf[i]=s[i];
+        df[i]=d[i];
+    }
 
-for(int k = 0; k < 3; k++){
+    while(y!=0)                          //幾台車
+    {
+        for(i=0;i<count;i++)
+        {
+            sum=0;
 
-    int min = 0;
+            if(d[x]<=s[i])
+            {
+                x=i;
+                s[i]=0;
+            }
+            s[x]=0;
 
-    for(int i = 0; i < 3; i++){
-        if(c[i][0] < min && c[i][0] != 0){
-            min = c[i][0];
-            d[i][0] = min;
+            if(i==count-1)
+            {
+                num++;
+                for(j=0;j<count;j++)
+                {
+                    if(s[j]!=0)
+                    {
+                        x=j;
+                        j=count;
+                    }
+                }
+            }
+
+            for(k=0;k<count;k++)
+            sum=sum+s[k];
+            if(sum==0)
+            y=0;
         }
     }
-    for(int i = 0; i < 3; i++){
-        if(min == c[i][0]){
-            c[i][0] = 0;
+
+    printf("%d",num);
+    x=0;
+
+    for(i=0;i<num;i++)            //輸出班表
+    {
+        printf("\nDriver %d's schedule is %d %d ",i+1,sf[x],df[x]);;
+
+        for(j=0;j<count;j++)
+        {
+            if(df[x]<=sf[j])
+            {
+                x=j;
+                printf("%d %d ",sf[j],df[j]);
+                sf[j]=0;
+            }
+            sf[x]=0;
+
+            if(j==count-1)
+            {
+                for(k=0;k<count;k++)
+                {
+                    if(sf[k]!=0)
+                    {
+                        x=k;
+                        k=count;
+                    }
+                }
+            }
         }
-    }
-    min = 0;
-    for(int j = 0; j < 3; j++){
-        if(c[j][1] < min && c[j][1] != 0){
-            min = c[j][1];
-            d[j][1] = min;
-        }
-    }
-    for(int i = 0; i < 3; i++){
-        if(min == c[i][1]){
-            c[i][1] = 0;
-        }
-    }
-}
-    if(ans == 1){
-      printf("Driver 1's schedule is %d %d %d %d %d %d\n", d[0][0], d[0][1], d[1][0], d[1][1], d[2][0], d[2][1]);
-    }
-    else if(ans == 2 && d[0][1] <= d[1][0] && d[1][1] > d[2][0]){
-      printf("Driver 1's schedule is %d %d %d %d\n", d[0][0], d[0][1], d[1][0], d[1][1]);
-      printf("Driver 2's schedule is %d %d\n", d[2][0], d[2][1]);
-    }
-    else if(ans == 2 && d[1][1] <= d[2][0] && d[0][1] > d[1][0]){
-      printf("Driver 1's schedule is %d %d\n", d[0][0], d[0][1]);
-      printf("Driver 2's schedule is %d %d %d %d\n", d[1][0], d[1][1], d[2][0], d[2][1]);
-    }
-    else if(ans == 3){
-      printf("Driver 1's schedule is %d %d\n",d[0][0], d[0][1]);
-      printf("Driver 2's schedule is %d %d\n",d[1][0], d[1][1]);
-      printf("Driver 3's schedule is %d %d\n",d[2][0], d[2][1]);
     }
     return 0;
 }
-//Driver 1's schedule is
-
