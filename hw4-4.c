@@ -10,8 +10,9 @@ int main()
             break;
         }
     }
-
-    int a[10][10];
+    int b = n;
+    int g = n;
+    int a[b][g];
     int m;
     for(int i = 0; i < n; i++){
         for(int s = 0; s < n; s++){
